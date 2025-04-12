@@ -58,9 +58,11 @@ services:
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=ahmed
       - ME_CONFIG_MONGODB_ADMINPASSWORD=ahmed
-      - ME_CONFIG_MONGODB_SERVER=weather_mongo_db
+      - ME_CONFIG_MONGODB_SERVER=weather_mongodb
       - ME_CONFIG_BASICAUTH_USERNAME=ahmed
       - ME_CONFIG_BASICAUTH_PASSWORD=ahmed
+    networks:
+      - weather-net
   spring-weather-service:
     build: ./
     container_name: spring-weather-service

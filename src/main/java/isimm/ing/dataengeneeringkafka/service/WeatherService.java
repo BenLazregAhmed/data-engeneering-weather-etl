@@ -8,11 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
+
 @Service
 @RequiredArgsConstructor
 public class WeatherService {
 private final WeatherRepository weatherRepository;
-    @Bean
+    //@Bean
     public Consumer<WeatherData>weatherDataConsumer(){
         return (input)->{
             double temperatureCelsius = (input.getTemperature() - 32) * 5 / 9;
@@ -24,7 +26,23 @@ private final WeatherRepository weatherRepository;
             units.setWindSpeed("kmh");
             input.setUnits(units);
             System.out.println("Converted weather data: " + input);
+            //weatherRepository.save(input);
+        };
+    }
+    @Bean
+    public Function<WeatherData,WeatherData> weatherDataFunction(){
+        return (input)->{
+            double temperatureCelsius = (input.getTemperature() - 32) * 5 / 9;
+            input.setTemperature(temperatureCelsius);
+            double windSpeedKmh = input.getWindSpeed() * 1.60934;
+            input.setWindSpeed(windSpeedKmh);
+            Units units = new Units();
+            units.setTemperature("C");
+            units.setWindSpeed("kmh");
+            input.setUnits(units);
+            System.out.println("Converted weather data: " + input);
             weatherRepository.save(input);
+            return input;
         };
     }
 }
